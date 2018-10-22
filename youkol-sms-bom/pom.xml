@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>youkol-sms-parent</artifactId>
+    <groupId>com.youkol.sms</groupId>
+    <version>1.0.9-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.youkol.sms</groupId>
+  <artifactId>youkol-sms-bom</artifactId>
+  <packaging>pom</packaging>
+
+  <name>youkol-sms-bom</name>
+  <url>https://github.com/youkol/youkol-sms</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.youkol.sms</groupId>
+        <artifactId>youkol-sms-core</artifactId>
+        <version>1.0.9-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.youkol.sms</groupId>
+        <artifactId>youkol-sms-api</artifactId>
+        <version>1.0.9-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+</project>

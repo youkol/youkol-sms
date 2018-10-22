@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>youkol-sms-bom</artifactId>
+    <groupId>com.youkol.sms</groupId>
+    <version>1.0.9-SNAPSHOT</version>
+    <relativePath>../youkol-sms-bom</relativePath>
+  </parent>
+
+  <groupId>com.youkol.sms</groupId>
+  <artifactId>youkol-sms-api</artifactId>
+  <packaging>jar</packaging>
+
+  <name>youkol-sms-api</name>
+  <url>https://github.com/youkol/youkol-sms</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.youkol.sms</groupId>
+      <artifactId>youkol-sms-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.jianzhou.sdk</groupId>
+      <artifactId>jzsms</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+</project>
