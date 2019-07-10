@@ -15,4 +15,6 @@ public class DefaultSmsConfig implements SmsConfig {
     private String signName;
     private SignPosition signPosition;
     private Integer batchMaxCount;
+    private Integer connectTimeout;
+    private Integer readTimeout;
 }

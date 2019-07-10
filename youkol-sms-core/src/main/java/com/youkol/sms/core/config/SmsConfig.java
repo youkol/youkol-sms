@@ -14,31 +14,21 @@ public interface SmsConfig {
      */
     String getServerName();
 
-    void setServerName(String serverName);
-
     String getServerHost();
-
-    void setServerHost(String serverHost);
 
     String getUsername();
 
-    void setUsername(String username);
-
     String getPassword();
-
-    void setPassword(String password);
 
     SignPosition getSignPosition();
 
-    void setSignPosition(SignPosition signPosition);
-
     String getSignName();
-
-    void setSignName(String signName);
 
     Integer getBatchMaxCount();
 
-    void setBatchMaxCount(Integer batchMaxCount);
+    Integer getConnectTimeout();
+
+    Integer getReadTimeout();
 
     /**
      * 短信签名位置
