@@ -30,7 +30,12 @@
       </dependency>
       <dependency>
         <groupId>com.youkol.sms</groupId>
-        <artifactId>youkol-sms-api</artifactId>
+        <artifactId>youkol-sms-smscn</artifactId>
+        <version>1.0.9-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.youkol.sms</groupId>
+        <artifactId>youkol-sms-jianzhou</artifactId>
         <version>1.0.9-SNAPSHOT</version>
       </dependency>
       <dependency>
