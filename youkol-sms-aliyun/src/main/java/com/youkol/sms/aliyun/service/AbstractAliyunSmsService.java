@@ -5,32 +5,55 @@ import java.util.List;
 import java.util.Map;
 
 import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
+import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
 import com.youkol.sms.aliyun.config.AliyunSmsConfig;
 import com.youkol.sms.aliyun.model.AliyunSmsBatchMessage;
 import com.youkol.sms.aliyun.model.AliyunSmsMessage;
+import com.youkol.sms.aliyun.service.response.AliyunBaseResponse;
 import com.youkol.sms.aliyun.util.AliyunSmsConstants;
 import com.youkol.sms.aliyun.util.AliyunSmsConstants.SmsAction;
 import com.youkol.sms.core.config.SmsConfig;
+import com.youkol.sms.core.exception.SmsSendException;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
 import com.youkol.sms.core.model.SmsTemplate;
 import com.youkol.sms.core.service.AbstractSmsService;
-import com.youkol.sms.core.service.SmsSender;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * @author jackiea
  */
-public abstract class AbstractAliyunSmsSender extends AbstractSmsService implements SmsSender {
+@Slf4j
+public class AbstractAliyunSmsService extends AbstractSmsService {
 
-    public AbstractAliyunSmsSender(SmsConfig config) {
+    private final IAcsClient client;
+
+    private final Gson gson = new Gson();
+
+    public AbstractAliyunSmsService(SmsConfig config) {
         super(config);
+
+        String regionId = config.getServerName();
+        String accessKeyId = config.getUsername();
+        String accessSecret = config.getPassword();
+
+        DefaultProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessSecret);
+        this.client = new DefaultAcsClient(profile);
+    }
+
+    protected String toJson(Object src) {
+        return gson.toJson(src);
     }
 
     protected CommonRequest creatRequest(SmsAction action) {
-        AliyunSmsConfig config = (AliyunSmsConfig)this.getConfig();
+        AliyunSmsConfig config = (AliyunSmsConfig) this.getConfig();
 
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
@@ -47,7 +70,24 @@ public abstract class AbstractAliyunSmsSender extends AbstractSmsService impleme
         return creatRequest(null);
     }
 
-    protected void fillParams(CommonRequest request, SmsMessage message) {
+    protected <T extends AliyunBaseResponse> T sendRequest(CommonRequest request, Class<T> resultType) throws SmsSendException {
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+            
+            log.debug(response.getHttpResponse().toString());
+
+            if (!response.getHttpResponse().isSuccess()) {
+                throw new SmsSendException("发送短信发生异常, 错误状态码：" + response.getHttpStatus());
+            }
+
+            T result = gson.fromJson(response.getData(), resultType);
+            return result;
+        } catch (ClientException ex) {
+            throw new SmsSendException("发送短信发生异常", ex);
+        }
+    }
+
+    protected void fillSendParams(CommonRequest request, SmsMessage message) {
         AliyunSmsConfig config = (AliyunSmsConfig)this.getConfig();
         AliyunSmsMessage aliMessage = (AliyunSmsMessage)message;
 
@@ -64,15 +104,14 @@ public abstract class AbstractAliyunSmsSender extends AbstractSmsService impleme
 
         Map<String, String> templateParams = aliMessage.getTemplateParams();
         if (templateParams != null && !templateParams.isEmpty()) {
-            Gson gson = new Gson();
-            String params = gson.toJson(templateParams); 
+            String params = this.toJson(templateParams); 
             request.putQueryParameter("TemplateParam", params);
         }
 
         request.putQueryParameter("SmsUpExtendCode", aliMessage.getSmsUpExtendCode());
     }
 
-    protected void fillBatchParams(CommonRequest request, SmsBatchMessage message) {
+    protected void fillSendBatchParams(CommonRequest request, SmsBatchMessage message) {
         AliyunSmsConfig config = (AliyunSmsConfig)this.getConfig();
         AliyunSmsBatchMessage aliMessage = (AliyunSmsBatchMessage)message;
 
@@ -80,15 +119,13 @@ public abstract class AbstractAliyunSmsSender extends AbstractSmsService impleme
 
         request.putQueryParameter("RegionId", config.getServerName());
 
-        Gson gson = new Gson();
-
         List<String> phones = aliMessage.getPhones();
-        String phoneNumberJson = gson.toJson(phones);
+        String phoneNumberJson = this.toJson(phones);
         request.putQueryParameter("PhoneNumberJson", phoneNumberJson);
 
         List<String> signNames = new ArrayList<>();
         phones.forEach(t -> signNames.add(config.getSignName()));
-        String signNameJson = gson.toJson(signNames);
+        String signNameJson = this.toJson(signNames);
         request.putQueryParameter("SignNameJson", signNameJson);
 
         SmsTemplate template = aliMessage.getTemplate();
@@ -96,14 +133,15 @@ public abstract class AbstractAliyunSmsSender extends AbstractSmsService impleme
 
         List<Map<String, String>> templateParams = aliMessage.getTemplateParams();
         if (templateParams != null && !templateParams.isEmpty()) {
-            String params = gson.toJson(templateParams); 
+            String params = this.toJson(templateParams); 
             request.putQueryParameter("TemplateParamJson", params);
         }
 
         List<String> smsUpExtendCodes = aliMessage.getSmsUpExtendCodes();
         if (smsUpExtendCodes != null && !smsUpExtendCodes.isEmpty()) {
-            String params = gson.toJson(smsUpExtendCodes); 
+            String params = this.toJson(smsUpExtendCodes); 
             request.putQueryParameter("SmsUpExtendCodeJson", params);
         }
     }
+    
 }

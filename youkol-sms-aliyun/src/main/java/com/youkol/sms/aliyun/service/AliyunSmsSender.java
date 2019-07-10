@@ -3,19 +3,13 @@ package com.youkol.sms.aliyun.service;
 import java.util.List;
 
 import com.aliyuncs.CommonRequest;
-import com.aliyuncs.CommonResponse;
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.profile.DefaultProfile;
-import com.youkol.sms.aliyun.config.AliyunSmsConfig;
+import com.youkol.sms.aliyun.service.response.AliyunSendSmsResponse;
+import com.youkol.sms.core.config.SmsConfig;
 import com.youkol.sms.core.exception.SmsException;
 import com.youkol.sms.core.exception.SmsMaxBatchSizeExceededException;
-import com.youkol.sms.core.exception.SmsSendException;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
-
-import lombok.extern.slf4j.Slf4j;
+import com.youkol.sms.core.service.SmsSender;
 
 /**
  * 阿里云 短信服务
@@ -26,35 +20,18 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author jackiea
  */
-@Slf4j
-public class AliyunSmsSender extends AbstractAliyunSmsSender {
+public class AliyunSmsSender extends AbstractAliyunSmsService implements SmsSender {
 
-    private final IAcsClient client;
-
-    public AliyunSmsSender(AliyunSmsConfig config) {
+    public AliyunSmsSender(SmsConfig config) {
         super(config);
-
-        String regionId = config.getServerName();
-        String accessKeyId = config.getUsername();
-        String accessSecret = config.getPassword();
-
-        DefaultProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessSecret);
-        this.client = new DefaultAcsClient(profile);
     }
 
     @Override
     public void send(SmsMessage smsMessage) throws SmsException {
         CommonRequest request = this.creatRequest();
-        this.fillParams(request, smsMessage);
+        this.fillSendParams(request, smsMessage);
 
-        CommonResponse response = null;
-        try {
-            response = client.getCommonResponse(request);
-
-            log.debug(response.getHttpResponse().toString());
-        } catch (ClientException ex) {
-            throw new SmsSendException("发送短信发生异常", ex);
-        }
+        this.sendRequest(request, AliyunSendSmsResponse.class);
     }
 
     @Override
@@ -71,16 +48,9 @@ public class AliyunSmsSender extends AbstractAliyunSmsSender {
     @Override
     public void send(SmsBatchMessage smsBatchMessage) throws SmsException {
         CommonRequest request = this.creatRequest();
-        this.fillBatchParams(request, smsBatchMessage);
+        this.fillSendBatchParams(request, smsBatchMessage);
 
-        CommonResponse response = null;
-        try {
-            response = client.getCommonResponse(request);
-
-            log.debug(response.getHttpResponse().toString());
-        } catch (ClientException ex) {
-            throw new SmsSendException("发送短信发生异常", ex);
-        }
+        this.sendRequest(request, AliyunSendSmsResponse.class);
     }
     
 }
