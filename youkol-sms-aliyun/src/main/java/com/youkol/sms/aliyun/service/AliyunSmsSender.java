@@ -15,7 +15,6 @@ import com.youkol.sms.core.exception.SmsSendException;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,15 +27,12 @@ import lombok.extern.slf4j.Slf4j;
  * @author jackiea
  */
 @Slf4j
-public class AliyunSmsSenderImpl extends AbstractAliyunSmsSender {
+public class AliyunSmsSender extends AbstractAliyunSmsSender {
 
     private final IAcsClient client;
 
-    @Getter
-    private final AliyunSmsConfig config;
-
-    public AliyunSmsSenderImpl(AliyunSmsConfig config) {
-        this.config = config;
+    public AliyunSmsSender(AliyunSmsConfig config) {
+        super(config);
 
         String regionId = config.getServerName();
         String accessKeyId = config.getUsername();
@@ -63,7 +59,7 @@ public class AliyunSmsSenderImpl extends AbstractAliyunSmsSender {
 
     @Override
     public void send(List<SmsMessage> smsMessages) throws SmsException {
-        if (smsMessages.size() > config.getBatchMaxCount()) {
+        if (smsMessages.size() > this.getConfig().getBatchMaxCount()) {
             throw new SmsMaxBatchSizeExceededException("超过最大发送条数限制");
         }
 
@@ -86,21 +82,5 @@ public class AliyunSmsSenderImpl extends AbstractAliyunSmsSender {
             throw new SmsSendException("发送短信发生异常", ex);
         }
     }
-
-    @Override
-    public int getRemainedCount() throws SmsException {
-        return 0;
-    }
-
-    @Override
-    public int getSendedCount() throws SmsException {
-        return 0;
-    }
-
-    @Override
-    public boolean modifyPassword(String oldPassword, String newPassword) throws SmsException {
-        return false;
-    }
-
     
 }

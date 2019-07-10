@@ -6,18 +6,17 @@ import com.youkol.sms.core.config.SmsConfig;
 import com.youkol.sms.core.exception.SmsException;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
-import com.youkol.sms.core.service.AbstractSmsSender;
+import com.youkol.sms.core.service.AbstractSmsService;
+import com.youkol.sms.core.service.SmsSender;
 
 /**
  * 云短信
  * <p>第三方短信发送接口实现
  * <p>详见：http://www.sms.cn
  * 
- * // TODO: 暂未实现
- * 
  * @author jackiea
  */
-public class SmsCnSmsSender extends AbstractSmsSender {
+public class SmsCnSmsSender extends AbstractSmsService implements SmsSender {
 
     public SmsCnSmsSender(SmsConfig config) {
         super(config);
@@ -25,32 +24,17 @@ public class SmsCnSmsSender extends AbstractSmsSender {
 
     @Override
     public void send(SmsMessage smsMessage) throws SmsException {
-
+        // TODO 待实现
     }
 
     @Override
     public void send(List<SmsMessage> smsMessages) throws SmsException {
-
+        // TODO 待实现
     }
 
     @Override
     public void send(SmsBatchMessage smsBatchMessage) throws SmsException {
-
-    }
-
-    @Override
-    public int getRemainedCount() throws SmsException {
-        return 0;
-    }
-
-    @Override
-    public int getSendedCount() throws SmsException {
-        return 0;
-    }
-
-    @Override
-    public boolean modifyPassword(String oldPassword, String newPassword) throws SmsException {
-        return false;
+        // TODO 待实现
     }
 
 }

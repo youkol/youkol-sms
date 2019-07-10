@@ -12,17 +12,22 @@ import com.youkol.sms.aliyun.model.AliyunSmsBatchMessage;
 import com.youkol.sms.aliyun.model.AliyunSmsMessage;
 import com.youkol.sms.aliyun.util.AliyunSmsConstants;
 import com.youkol.sms.aliyun.util.AliyunSmsConstants.SmsAction;
+import com.youkol.sms.core.config.SmsConfig;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
 import com.youkol.sms.core.model.SmsTemplate;
+import com.youkol.sms.core.service.AbstractSmsService;
 import com.youkol.sms.core.service.SmsSender;
-import com.youkol.sms.core.util.SmsUtil;
 
 /**
  * 
  * @author jackiea
  */
-public abstract class AbstractAliyunSmsSender implements SmsSender {
+public abstract class AbstractAliyunSmsSender extends AbstractSmsService implements SmsSender {
+
+    public AbstractAliyunSmsSender(SmsConfig config) {
+        super(config);
+    }
 
     protected CommonRequest creatRequest(SmsAction action) {
         AliyunSmsConfig config = (AliyunSmsConfig)this.getConfig();
@@ -51,7 +56,7 @@ public abstract class AbstractAliyunSmsSender implements SmsSender {
         request.putQueryParameter("RegionId", config.getServerName());
         request.putQueryParameter("SignName", config.getSignName());
 
-        String phoneNumbers = SmsUtil.join(AliyunSmsConstants.PHONE_SEPARATOR, aliMessage.getPhones());
+        String phoneNumbers = this.join(AliyunSmsConstants.PHONE_SEPARATOR, aliMessage.getPhones());
         request.putQueryParameter("PhoneNumbers", phoneNumbers);
 
         SmsTemplate template = aliMessage.getTemplate();

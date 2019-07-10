@@ -14,12 +14,12 @@ import lombok.Getter;
 /**
  * @author jackiea
  */
-public abstract class AbstractSmsSender implements SmsSender {
+public abstract class AbstractSmsService implements SmsConfigService {
 
     @Getter
     private SmsConfig config;
 
-    public AbstractSmsSender(SmsConfig config) {
+    public AbstractSmsService(SmsConfig config) {
         this.config = config;
     }
 
