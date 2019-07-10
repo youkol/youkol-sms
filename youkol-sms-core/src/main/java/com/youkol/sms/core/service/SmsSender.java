@@ -1,7 +1,8 @@
-package com.youkol.sms.core;
+package com.youkol.sms.core.service;
 
 import java.util.List;
 
+import com.youkol.sms.core.config.SmsConfig;
 import com.youkol.sms.core.exception.SmsException;
 import com.youkol.sms.core.model.SmsBatchMessage;
 import com.youkol.sms.core.model.SmsMessage;
@@ -14,7 +15,14 @@ import com.youkol.sms.core.model.SmsMessage;
 public interface SmsSender {
 
     /**
-     * 发送单条短信
+     * 获取短信配置信息
+     * 
+     * @return 短信配置信息
+     */
+    public SmsConfig getConfig();
+
+    /**
+     * 发送短信（若有多个手机号，内容相同）
      * 
      * @param smsMessage 短信信息
      * @throws SmsException 异常信息
@@ -22,7 +30,7 @@ public interface SmsSender {
     public void send(SmsMessage smsMessage) throws SmsException;
 
     /**
-     * 发送多条短信（内容部分不相同）
+     * 发送短信（内容不相同）
      * 
      * @param smsMessages 短信信息
      * @throws SmsException 异常信息
@@ -30,7 +38,7 @@ public interface SmsSender {
     public void send(List<SmsMessage> smsMessages) throws SmsException;
 
     /**
-     * 发送多条短信（相同内容）
+     * 发送短信（多个手机号，内容格式相同）
      * 
      * @param smsBatchMessage 批量短信信息
      * @throws SmsException 异常信息

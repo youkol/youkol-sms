@@ -33,6 +33,11 @@
         <artifactId>youkol-sms-api</artifactId>
         <version>1.0.9-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>com.youkol.sms</groupId>
+        <artifactId>youkol-sms-aliyun</artifactId>
+        <version>1.0.9-SNAPSHOT</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

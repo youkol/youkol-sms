@@ -13,7 +13,9 @@
   <modules>
     <module>youkol-sms-bom</module>
     <module>youkol-sms-core</module>
-    <module>youkol-sms-api</module>
+    <module>youkol-sms-smscn</module>
+    <module>youkol-sms-jianzhou</module>
+    <module>youkol-sms-aliyun</module>
   </modules>
 
   <licenses>
@@ -42,7 +44,9 @@
     <lombok.maven.version>1.18.2.0</lombok.maven.version>
     <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
     <guava.version>26.0-jre</guava.version>
+    <gson.version>2.8.5</gson.version>
     <sms.jzsms.version>6.1</sms.jzsms.version>
+    <aliyun.sdk.version>4.4.2</aliyun.sdk.version>
 
     <!-- Plugin versions -->
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
@@ -107,6 +111,11 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
@@ -115,6 +124,11 @@
         <groupId>com.jianzhou.sdk</groupId>
         <artifactId>jzsms</artifactId>
         <version>${sms.jzsms.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>aliyun-java-sdk-core</artifactId>
+        <version>${aliyun.sdk.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -169,8 +183,8 @@
   </repositories>
 
   <build>
-    <sourceDirectory>${project.build.directory}/generated-sources/delombok</sourceDirectory>
-    <testSourceDirectory>${project.build.directory}/generated-test-sources/delombok</testSourceDirectory>
+    <!-- <sourceDirectory>${project.build.directory}/generated-sources/delombok</sourceDirectory>
+    <testSourceDirectory>${project.build.directory}/generated-test-sources/delombok</testSourceDirectory> -->
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->

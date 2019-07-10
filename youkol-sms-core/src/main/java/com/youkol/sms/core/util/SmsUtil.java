@@ -23,7 +23,7 @@ public class SmsUtil {
      * @return 返回根据短信签名位置进行签名后的短信内容
      */
     public static String addSignName(SmsConfig config, String content) {
-        String result = content;
+        String result = Strings.nullToEmpty(content);
         if (config.getSignPosition() == null) {
             return result;
         }
@@ -95,8 +95,14 @@ public class SmsUtil {
      * @param batchMessage  批量短信信息
      * @return 返回根据短信签名位置进行签名后的短信内容
      */
-    public static String addSignName(SmsConfig config, SmsBatchMessage batchMessage) {
-        return addSignName(config, batchMessage.getContent());
+    public static List<String> addSignName(SmsConfig config, SmsBatchMessage batchMessage) {
+        List<String> result = new ArrayList<>();
+        batchMessage.getContents().forEach(t -> {
+            String content = addSignName(config, t);
+            result.add(content);
+        });
+
+        return result;
     }
 
     /**
@@ -126,11 +132,24 @@ public class SmsUtil {
     public static String joinPhone(SmsBatchMessage message, String separator) {
         StringBuilder phone = new StringBuilder();
 
-        message.getPhone().forEach(t -> {
+        message.getPhones().forEach(t -> {
             phone.append(t).append(separator);
         });
 
         return phone.substring(0, phone.length() - separator.length());
     }
 
+    public static String join(String separator, Iterable<String> parts) {
+        if (parts == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        parts.forEach(t -> sb.append(separator).append(t));
+
+        if (sb.length() > 0) {
+            return sb.substring(1);
+        } else {
+            return null;
+        }
+    }
 }

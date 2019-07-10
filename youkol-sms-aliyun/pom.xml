@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>youkol-sms-bom</artifactId>
+    <groupId>com.youkol.sms</groupId>
+    <version>1.0.9-SNAPSHOT</version>
+    <relativePath>../youkol-sms-bom</relativePath>
+  </parent>
+
+  <groupId>com.youkol.sms</groupId>
+  <artifactId>youkol-sms-aliyun</artifactId>
+  <packaging>jar</packaging>
+
+  <name>youkol-sms-aliyun</name>
+  <url>https://github.com/youkol/youkol-sms</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.youkol.sms</groupId>
+      <artifactId>youkol-sms-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>aliyun-java-sdk-core</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
