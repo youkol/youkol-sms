@@ -43,7 +43,7 @@
     <lombok.version>1.18.2</lombok.version>
     <lombok.maven.version>1.18.2.0</lombok.maven.version>
     <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
-    <guava.version>26.0-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <jackson.version>2.9.9</jackson.version>
     <sms.jzsms.version>6.1</sms.jzsms.version>
     <aliyun.sdk.version>4.4.2</aliyun.sdk.version>
